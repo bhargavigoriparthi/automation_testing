@@ -1,13 +1,14 @@
 import pytest
 from pageObjects.LoginPage import LoginPage
+from pageObjects.AddCustomerPage import AddCustomerPage
+import time
 
-class Test_001_Login:
+class Test_002_AddCustomer:
     baseURL = "https://admin-demo.nopcommerce.com/"
     username = "admin@yourstore.com"
     password = "admin"
 
-    @pytest.mark.sanity
-    def test_login(self, setup):
+    def test_addCustomer(self, setup):
         self.driver = setup
         self.driver.get(self.baseURL)
         self.driver.maximize_window()
@@ -16,11 +17,11 @@ class Test_001_Login:
         lp.setUserName(self.username)
         lp.setPassword(self.password)
         lp.clickLogin()
+        time.sleep(2)
 
-        actual_title = self.driver.title
-        expected_title = "Dashboard / nopCommerce administration"
+        addcust = AddCustomerPage(self.driver)
+        addcust.clickOnCustomersMenu()
+        time.sleep(1)
+        addcust.clickOnCustomersMenuItem()
 
-        assert actual_title == expected_title, f"Expected title '{expected_title}' but got '{actual_title}'"
 
-        lp.clickLogout()
-        self.driver.quit()
